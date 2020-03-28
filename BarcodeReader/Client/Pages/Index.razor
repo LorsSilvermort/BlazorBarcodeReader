@@ -1,0 +1,20 @@
+﻿@page "/"
+@inject IJSRuntime IJSRuntime
+
+<h1>Hello, world!</h1>
+<button class="btn btn-primary" @onclick="GetTime">Hämta Tid</button>
+<p class="h6"><span class="oi-timer">@CurrentTime</span></p>
+Welcome to your new app.
+
+
+@code
+{
+    private MarkupString CurrentTime;
+    private async Task GetTime()
+    {
+        var time = await IJSRuntime.InvokeAsync<string>("MyLib.GetCurrentTime");
+        CurrentTime = new MarkupString(time);
+        StateHasChanged();
+    }
+
+}

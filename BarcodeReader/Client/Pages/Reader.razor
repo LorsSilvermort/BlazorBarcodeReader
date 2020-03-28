@@ -1,0 +1,42 @@
+﻿@page "/reader"
+@inject IJSRuntime IJSRuntime
+<style>
+    /* In order to place the tracking correctly */
+    canvas.drawing, canvas.drawingBuffer, .drawingBuffer {
+        position: absolute;
+        left: inherit;
+        top: inherit;
+        display: none;
+        border-radius: 10px;
+    }
+</style>
+
+<input id="scan-value" @bind="decodedValue" />
+<input @bind="decodedValue" />
+<p>Result: @Result</p>
+<br />
+
+<div id="scanner-container">
+    <canvas id="helperlines" class="drawingBuffer"></canvas>
+</div>
+<button id="btn" @onclick="StartReader">Start/Stop the scanner</button>
+
+
+
+@code {
+    private string Result = "inget";
+    private string decodedValue = "";
+    ElementReference ReferenceToInputControl;
+    private async Task StartReader()
+    {
+        await IJSRuntime.InvokeVoidAsync("MyLib.DecodeBarcode", DotNetObjectReference.Create(this));
+
+    }
+
+    [JSInvokable]
+    public void SetReturnValue(string value)
+    {
+        decodedValue = value;
+        StateHasChanged();
+    }
+}
