@@ -1,20 +1,20 @@
-﻿@page "/"
+﻿@using BarcodeReader.Client.Components 
+@page "/"
 @inject IJSRuntime IJSRuntime
 
-<h1>Hello, world!</h1>
-<button class="btn btn-primary" @onclick="GetTime">Hämta Tid</button>
-<p class="h6"><span class="oi-timer">@CurrentTime</span></p>
-Welcome to your new app.
+<h4>Blazor BarcodeReader</h4>
+<h6>Value: @_barcodeValue</h6>
+<BarcodeReaderComponent
+  GetValue="((value) => SetValue(value))">
+</BarcodeReaderComponent>
+
 
 
 @code
 {
-    private MarkupString CurrentTime;
-    private async Task GetTime()
+    private string _barcodeValue = string.Empty;
+    private void SetValue(string value)
     {
-        var time = await IJSRuntime.InvokeAsync<string>("MyLib.GetCurrentTime");
-        CurrentTime = new MarkupString(time);
-        StateHasChanged();
+        _barcodeValue = value;
     }
-
 }

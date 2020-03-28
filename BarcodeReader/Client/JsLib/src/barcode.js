@@ -23,7 +23,7 @@ export function decodeBarcode(instance) {
             },
             numOfWorkers: navigator.hardwareConcurrency,
             locate: false,
-            frequency: 20,
+            frequency: 10,
             multiple: false,
             locator: {
                 halfSample: true,
@@ -73,11 +73,11 @@ export function decodeBarcode(instance) {
                 }
 
                 if (result.box) {
-                    Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+                    //Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
                 }
 
                 if (result.codeResult && result.codeResult.code) {
-                    Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'green', lineWidth: 3 });
+                    //Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'green', lineWidth: 3 });
                 }
             }
         });
@@ -86,16 +86,20 @@ export function decodeBarcode(instance) {
         Quagga.onDetected(function (result) {
             
             decodedBarcode = result.codeResult.code;
-            alert(result.codeResult.startInfo.error + " | " + result.codeResult.startInfo.error + " Result: " + result.codeResult.code);
+            //alert(result.codeResult.startInfo.error + " | " + result.codeResult.startInfo.error + " Result: " + result.codeResult.code);
 
-            //if (result.codeResult.startInfo.error < 0.12) { 
-            //    alert(result.codeResult.startInfo.error + " | " + result.codeResult.startInfo.error + " Result: " + result.codeResult.code);
-            //document.getElementById('scanner-container').style.display = 'none';
-            //Quagga.stop();
-            //instance.invokeMethod('SetReturnValue', decodedBarcode);
-            //}
+            if (result.codeResult.startInfo.error < 0.12) { 
+                //alert(result.codeResult.startInfo.error + " | " + result.codeResult.startInfo.error + " Result: " + result.codeResult.code);
+            document.getElementById('scanner-container').style.display = 'none';
+            Quagga.stop();
+            instance.invokeMethod('SetReturnValue', decodedBarcode);
+            }
         });
     
-    }
+}
+export function stopReader() {
+    document.getElementById('scanner-container').style.display = 'none';
+    Quagga.stop();
+}
 
 
